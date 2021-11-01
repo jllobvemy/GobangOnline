@@ -14,6 +14,18 @@ namespace GobangOnline.ViewModels
     internal class GobangViewModel: ObservableObject
     {
         public static readonly short CheckerboardLength = 15;
+
+
+        private bool _enabled;
+
+        public bool Enabled
+        {
+            get => _enabled;
+            set => SetProperty(ref _enabled, value);
+        }
+
+        public bool GameFinished { get; set; }
+
         public ChessPiece[,] CheckerboardData { get; set; }
         public Action<ChessPiece>? AddPieceAction { set; get; }
 
@@ -111,7 +123,8 @@ namespace GobangOnline.ViewModels
             };
             VictoryEvent += type =>
             {
-                MessageBox.Show($"{type} Win!");
+                var curr = type == PieceType.Black ? "黑" : "白";
+                MessageBox.Show($"{curr}色棋子胜利!");
                 ResetGame();
             };
             initPieceData();

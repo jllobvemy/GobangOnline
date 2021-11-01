@@ -10,28 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GobangOnline.ViewModels;
-using GobangOnline.Views;
 
-namespace GobangOnline
+namespace GobangOnline.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// JoinGame.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class JoinGame : Window
     {
-        public MainWindow()
+        public JoinGame()
         {
             InitializeComponent();
-            gameBar.Loaded += (sender, args) =>
-            {
-                var gameBarVm = new GameBarViewModel(checkerboard);
-                gameBar.DataContext = gameBarVm;
-            };
-
         }
-
     }
 }

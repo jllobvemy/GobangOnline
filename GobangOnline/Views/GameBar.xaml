@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="GobangOnline.Views.GameBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GobangOnline.Views"
+             xmlns:vm="clr-namespace:GobangOnline.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:GameBarViewModel}"
+             d:DesignHeight="600" d:DesignWidth="300">
+             
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.05*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="0.05*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="6*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <TextBlock Text="{Binding Tips}" Margin="10"
+                x:Name="TipsTextBlock" Padding="5" TextWrapping="WrapWithOverflow"></TextBlock>
+            <Button Command="{Binding LocalStartCommand}"
+                    IsEnabled="{Binding CanLocalStart}"
+                    x:Name="LocalStartButton" Content="开始游戏(本地)" Padding="10" Margin="10" ></Button>
+            <Button 
+                IsEnabled="{Binding CanLocalRestart}"
+                Command="{Binding LocalRestartCommand}"
+                x:Name="LocalRestartButton" Content="重新开始游戏(本地)" Padding="10" Margin="10" ></Button>
+            <Button IsEnabled="{Binding CanNetStart}"
+                Command="{Binding NetJoinCommand}"
+                x:Name="NetStartButton" Content="开始游戏(远程)" Padding="10" Margin="10" ></Button>
+                <GroupBox Header="聊天窗口" Margin="10" IsEnabled="{Binding ChatEnabled}">
+                <GroupBox.InputBindings>
+                    <KeyBinding Command="{Binding SendMessageCommand}"
+                    Key="Enter"
+                    ></KeyBinding>
+                </GroupBox.InputBindings>
+                    <StackPanel>
+                <Border 
+                    BorderThickness="0.5" BorderBrush="Silver">
+                    <!--
+                <TextBlock Text="{Binding Tips}"
+                    x:Name="ChatTextBlock" TextWrapping="WrapWithOverflow" Height="100"></TextBlock>
+                    -->
+                    <ListBox Height="140" ItemsSource="{Binding ChatMessages}" IsEnabled="True" Name="MessageListBox">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                            <TextBlock Text="{Binding}" TextWrapping="WrapWithOverflow" FontSize="12"></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+                <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding EditMessageText, UpdateSourceTrigger=PropertyChanged}" 
+                    x:Name="ChatInputTextBox"  Grid.Column="0" VerticalContentAlignment="Center">
+                </TextBox>
+                <Button Command="{Binding SendMessageCommand}" 
+                    x:Name="SendMsgButton" Content="发送" Padding="5" Grid.Column="1" ></Button>
+                </Grid>
+                    
+                </StackPanel>
+
+                </GroupBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GobangOnline", "GobangOnline\GobangOnline.csproj", "{93FD406A-02B9-4B25-9D84-39F0E069A233}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GobangOnline", "GobangOnline\GobangOnline.csproj", "{93FD406A-02B9-4B25-9D84-39F0E069A233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GobangOnline.Test", "GobangOnline.Test\GobangOnline.Test.csproj", "{980BBB63-3021-4892-94A1-07AF414CE8D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{93FD406A-02B9-4B25-9D84-39F0E069A233}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93FD406A-02B9-4B25-9D84-39F0E069A233}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93FD406A-02B9-4B25-9D84-39F0E069A233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{980BBB63-3021-4892-94A1-07AF414CE8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{980BBB63-3021-4892-94A1-07AF414CE8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{980BBB63-3021-4892-94A1-07AF414CE8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{980BBB63-3021-4892-94A1-07AF414CE8D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

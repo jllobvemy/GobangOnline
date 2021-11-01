@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GobangOnline.Models;
 using GobangOnline.ViewModels;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace GobangOnline.Views
 {
@@ -24,6 +25,17 @@ namespace GobangOnline.Views
     public partial class Checkerboard : UserControl
     {
         private IntPoint startupPoint = new IntPoint() { X = 30, Y = 30 };
+
+        public PieceType CurrPieceType
+        {
+            get => chessChanges % 2 == 0 ? PieceType.White : PieceType.Black;
+            set
+            {
+                _currPieceType = value;
+                chessChanges = value == PieceType.Black ? 1 : 0;
+            }
+        }
+
         public struct IntPoint
         {
             public int X, Y;
@@ -67,6 +79,10 @@ namespace GobangOnline.Views
         private GobangViewModel vm;
         private int aveWidth;
         private int aveHeight;
+        private PieceType _currPieceType;
+        private GameWay _gameWay = GameWay.Local;
+        public Action<IntPoint> NetAddPiece { get; set; }
+
         public Checkerboard()
         {
             InitializeComponent();
@@ -75,6 +91,7 @@ namespace GobangOnline.Views
             {
                 vm = new GobangViewModel(piece =>
                 {
+                    //NetAddPiece?.Invoke(piece);
                     AddNewPiece(new IntPoint() { X = piece.X * aveWidth, Y = piece.Y * aveHeight }, piece.PieceType);
                 });
                 DataContext = vm;
@@ -84,10 +101,12 @@ namespace GobangOnline.Views
                 Draw(MainCanvas, startupPoint);
                 vm.VictoryEvent += type =>
                 {
-                    ClearCheckerBoard();
+                    //ClearCheckerBoard();
+                    vm.Enabled = false;
+                    vm.GameFinished = true;
                 };
             };
-            chessChanges = 0;
+            chessChanges = 1;
         }
 
         private IntPoint Index2Coordinate(IntPoint index)
@@ -120,17 +139,35 @@ namespace GobangOnline.Views
                 return;
             }
             int r = 15;
-            Ellipse ellipse = new Ellipse(){Uid = Uid};
-            ellipse.StrokeThickness = 10;
-            ellipse.Fill = type == PieceType.Black? Brushes.Black : Brushes.White;
-            ellipse.Width = r;
-            ellipse.Height = r;
-            Canvas.SetTop(ellipse, point.Y - r / 2);
-            Canvas.SetLeft(ellipse, point.X - r / 2);
-            PieceCanvas.Children.Add(ellipse);
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Ellipse ellipse = new Ellipse() { Uid = Uid };
+                ellipse.StrokeThickness = 10;
+                ellipse.Fill = type == PieceType.Black ? Brushes.Black : Brushes.White;
+                ellipse.Width = r;
+                ellipse.Height = r;
+                Canvas.SetTop(ellipse, point.Y - r / 2);
+                Canvas.SetLeft(ellipse, point.X - r / 2);
+                PieceCanvas.Children.Add(ellipse);
+            });
         }
 
         public int chessChanges { get; set; }
+
+        public GameWay gameWay
+        {
+            get => _gameWay;
+            set => _gameWay = value;
+        }
+
+        public enum GameWay
+        {
+            Local,
+            Net
+        }
+
+        public delegate void NetAddNewPieceEventHandler(IntPoint p);
+        public event NetAddNewPieceEventHandler NetAddNewPiece;
 
         private void Board_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -142,14 +179,22 @@ namespace GobangOnline.Views
             var selectedPosi = vm.CheckerboardData[index.X, index.Y];
             if (selectedPosi.PieceType == PieceType.None)
             {
-                selectedPosi.PieceType = chessChanges % 2 == 0 ? PieceType.White : PieceType.Black;
-                chessChanges++;
+                if (gameWay == GameWay.Local)
+                {
+                    selectedPosi.PieceType = chessChanges % 2 == 0 ? PieceType.White : PieceType.Black;
+                    chessChanges++;
+                }
+                else
+                {
+                    NetAddNewPiece?.Invoke(index);
+                }
             }
         }
 
         public void ClearCheckerBoard()
         {
             PieceCanvas.Children.Clear();
+            vm.ResetGame();
         }
 
 
@@ -199,5 +244,6 @@ namespace GobangOnline.Views
                 currentPosX += scaleY;
             }
         }
+
     }
 }

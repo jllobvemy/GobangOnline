@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GobangOnline"
         xmlns:views="clr-namespace:GobangOnline.Views"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" MinHeight="550" MinWidth="800">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="MainWindow" Height="600" Width="800" MinHeight="600" MinWidth="800">
     <Grid>
     <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"></ColumnDefinition>
-        <ColumnDefinition Width="5*"></ColumnDefinition>
+        <ColumnDefinition Width="2*"></ColumnDefinition>
     </Grid.ColumnDefinitions>
     
-    <views:Checkerboard Grid.Column="1"></views:Checkerboard>
+    <views:Checkerboard Grid.Column="1" x:Name="checkerboard"></views:Checkerboard>
+    <views:GameBar Grid.Column="0" x:Name="gameBar"></views:GameBar>
 
     </Grid>
 </Window>
